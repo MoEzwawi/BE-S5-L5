@@ -1,10 +1,12 @@
 package MoEzwawi.BES5L5.entities;
 
+import MoEzwawi.BES5L5.exceptions.DateNotAvailableException;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Table(name = "bookings")
@@ -38,7 +40,12 @@ public class Booking {
             this.date = date;
             this.workspace = workspace;
             this.user = user;
-        } else System.err.println("date not available");
+        } else throw new DateNotAvailableException("date not available");
+    }
+
+    public void setDate(LocalDate date) throws DateNotAvailableException{
+        if (isDateAvailable(date, this.workspace, this.user)) this.date = date;
+        else throw new DateNotAvailableException("unable to update date");
     }
 
     @Override
