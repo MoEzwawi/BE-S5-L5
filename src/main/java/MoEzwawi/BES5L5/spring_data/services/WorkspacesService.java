@@ -5,6 +5,7 @@ import MoEzwawi.BES5L5.entities.enums.WorkspaceType;
 import MoEzwawi.BES5L5.exceptions.ItemNotFoundException;
 import MoEzwawi.BES5L5.spring_data.repositories.WorkspacesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -54,5 +55,12 @@ public class WorkspacesService {
     }
     public List<Workspace> filterByType(WorkspaceType type){
         return workspacesRepository.findByType(type);
+    }
+    public List<Workspace> filterByCity(String city){
+        return workspacesRepository.findByCity(city);
+    }
+    public List<Workspace> filterByTypeAndCity(WorkspaceType type, String city){
+        List<Workspace> filteredByCity = this.filterByCity(city);
+        return filteredByCity.stream().filter(workspace -> workspace.getType().equals(type)).toList();
     }
 }

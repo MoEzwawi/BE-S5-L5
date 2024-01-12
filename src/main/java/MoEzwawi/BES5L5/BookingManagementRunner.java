@@ -51,15 +51,20 @@ public class BookingManagementRunner implements CommandLineRunner {
         }
         for (int i = 0; i<10; i++){
             workspacesService.save(new Workspace("amazing", WorkspaceType.OPENSPACE,75,empire));
-        }
-        for (int i = 0; i<10; i++){
-            workspacesService.save(new Workspace("amazing", WorkspaceType.PRIVATE,35,bosco));
         }*/
+        for (int i = 0; i<10; i++){
+            workspacesService.save(new Workspace("amazing", WorkspaceType.OPENSPACE,50,bosco));
+        }
         /*User u1 = usersService.findById(2);
         Workspace w1 = workspacesService.findById(53);
         Booking b1 = new Booking(DateParser.parseDateForItaly("13/03/2024"),w1,u1);
         bookingsService.save(b1);*/
         List<Workspace> li1 = workspacesService.filterByType(WorkspaceType.PRIVATE);
         System.out.println(li1.toString());
+        List<Workspace> li2 = workspacesService.filterByCity("Milan");
+        System.out.println(li2);
+        List<Workspace> li3 = workspacesService.filterByTypeAndCity(WorkspaceType.PRIVATE,"Milan");
+        System.out.println(li3);
+
     }
 }
