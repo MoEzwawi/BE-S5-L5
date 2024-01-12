@@ -12,6 +12,6 @@ import java.util.List;
 public interface WorkspacesRepository extends JpaRepository<Workspace,Long> {
     List<Workspace> findByType(WorkspaceType type);
 
-    @Query("SELECT w FROM Workspace w WHERE w.building.city LIKE :city")
+    @Query("SELECT w FROM Workspace w WHERE LOWER(w.building.city) LIKE LOWER(:city)")
     public List<Workspace> findByCity(String city);
 }

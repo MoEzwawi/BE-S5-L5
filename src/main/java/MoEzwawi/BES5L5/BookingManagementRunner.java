@@ -66,5 +66,8 @@ public class BookingManagementRunner implements CommandLineRunner {
         List<Workspace> li3 = workspacesService.filterByTypeAndCity(WorkspaceType.PRIVATE,"Milan");
         System.out.println(li3);
 
+        List<Workspace> li4 = workspacesService.filterByCity("dubai");
+        System.out.println(li4);
+
     }
 }
