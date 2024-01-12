@@ -20,6 +20,7 @@ public class Workspace {
     @Setter
     private String description;
     @Setter
+    @Enumerated(EnumType.STRING)
     private WorkspaceType type;
     @Setter
     @Column(name = "max_capacity")
@@ -44,7 +45,7 @@ public class Workspace {
                 ", description='" + description + '\'' +
                 ", type=" + type +
                 ", maximumCapacity=" + maximumCapacity +
-                ", building n°=" + building.getName() +
+                ", building=" + building.getName() +
                 '}';
     }
 }

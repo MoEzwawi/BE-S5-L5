@@ -52,4 +52,7 @@ public class WorkspacesService {
     public long count(){
         return workspacesRepository.count();
     }
+    public List<Workspace> filterByType(WorkspaceType type){
+        return workspacesRepository.findByType(type);
+    }
 }

@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -24,11 +24,11 @@ public class User {
     @Setter
     private String email;
     @Column(name = "birthday")
-    private LocalDate dateOfBirth;
+    private Date dateOfBirth;
     @OneToMany(mappedBy = "user")
     private List<Booking> listOfBookings;
 
-    public User(String username, String fullName, String email, LocalDate dateOfBirth) {
+    public User(String username, String fullName, String email, Date dateOfBirth) {
         this.username = username;
         this.fullName = fullName;
         this.email = email;

@@ -1,6 +1,9 @@
 package MoEzwawi.BES5L5.spring_data.services;
 
 import MoEzwawi.BES5L5.entities.Booking;
+import MoEzwawi.BES5L5.entities.User;
+import MoEzwawi.BES5L5.entities.Workspace;
+import MoEzwawi.BES5L5.exceptions.DateNotAvailableException;
 import MoEzwawi.BES5L5.exceptions.ItemNotFoundException;
 import MoEzwawi.BES5L5.spring_data.repositories.BookingsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +17,29 @@ import java.util.Optional;
 public class BookingsService {
     @Autowired
     private BookingsRepository bookingsRepository;
+
+    public List<Booking> filterByWorkspace(Workspace workspace){
+        return bookingsRepository.findByWorkspace(workspace);
+    }
+    public List<Booking> filterByUser(User user){
+        return bookingsRepository.findByUser(user);
+    }
+    private boolean isDateAvailable(Booking booking){
+        return (this.filterByWorkspace(booking.getWorkspace()).stream()
+                .noneMatch(b -> b.getDate().equals(booking.getDate()))
+        )
+                &&
+                (this.filterByUser(booking.getUser()).stream()
+                        .noneMatch(b -> b.getDate().equals(booking.getDate()))
+                );
+    }
     public void save(Booking booking){
-        bookingsRepository.save(booking);
-        System.out.println("Booking saved correctly");
+        if(this.isDateAvailable(booking)) {
+            bookingsRepository.save(booking);
+            System.out.println("Booking saved correctly");
+        } else {
+            throw new DateNotAvailableException("Date not available");
+        }
     }
     public Booking findById(long id) throws ItemNotFoundException {
         Optional<Booking> bookingOptional = bookingsRepository.findById(id);
@@ -32,9 +55,13 @@ public class BookingsService {
     }
     public void findByIdAndUpdateDate(long id, LocalDate newDate){
         Booking found = this.findById(id);
-        found.setDate(newDate);
-        bookingsRepository.save(found);
-        System.out.println("Date correctly updated");
+        if(this.isDateAvailable(found)) {
+            found.setDate(newDate);
+            bookingsRepository.save(found);
+            System.out.println("Date correctly updated");
+        } else {
+            throw new DateNotAvailableException("Date not available");
+        }
     }
     public long count(){
         return bookingsRepository.count();
